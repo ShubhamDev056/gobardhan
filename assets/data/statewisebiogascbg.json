@@ -1,0 +1,283 @@
+{
+  "Sheet1": [
+    {
+      "sn": 1,
+      "state_name": "A & N Islands",
+      "biogas_plants": 0,
+      "CBG Plants": 0,
+      "Total": 0,
+      "CBG_plants": 0
+    },
+    {
+      "sn": 2,
+      "state_name": "Andhra Pradesh",
+      "biogas_plants": 0,
+      "CBG Plants": 5,
+      "Total": 2,
+      "CBG_plants": 7
+    },
+    {
+      "sn": 3,
+      "state_name": "Arunachal Pradesh",
+      "biogas_plants": 0,
+      "CBG Plants": 0,
+      "Total": 0,
+      "CBG_plants": 0
+    },
+    {
+      "sn": 4,
+      "state_name": "Assam",
+      "biogas_plants": 12,
+      "CBG Plants": 0,
+      "Total": 0,
+      "CBG_plants": 0
+    },
+    {
+      "sn": 5,
+      "state_name": "Bihar",
+      "biogas_plants": 2,
+      "CBG Plants": 0,
+      "Total": 0,
+      "CBG_plants": 0
+    },
+    {
+      "sn": 6,
+      "state_name": "Chhattisgarh",
+      "biogas_plants": 307,
+      "CBG Plants": 1,
+      "Total": 0,
+      "CBG_plants": 1
+    },
+    {
+      "sn": 7,
+      "state_name": "D & N Haveli and Daman & Diu",
+      "biogas_plants": 0,
+      "CBG Plants": 0,
+      "Total": 0,
+      "CBG_plants": 0
+    },
+    {
+      "sn": 8,
+      "state_name": "Goa",
+      "biogas_plants": 0,
+      "CBG Plants": 0,
+      "Total": 0,
+      "CBG_plants": 0
+    },
+    {
+      "sn": 9,
+      "state_name": "Gujarat",
+      "biogas_plants": 21,
+      "CBG Plants": 13,
+      "Total": 8,
+      "CBG_plants": 21
+    },
+    {
+      "sn": 10,
+      "state_name": "Haryana",
+      "biogas_plants": 6,
+      "CBG Plants": 5,
+      "Total": 3,
+      "CBG_plants": 8
+    },
+    {
+      "sn": 11,
+      "state_name": "Himachal Pradesh",
+      "biogas_plants": 9,
+      "CBG Plants": 0,
+      "Total": 0,
+      "CBG_plants": 0
+    },
+    {
+      "sn": 12,
+      "state_name": "Jammu & Kashmir",
+      "biogas_plants": 2,
+      "CBG Plants": 0,
+      "Total": 0,
+      "CBG_plants": 0
+    },
+    {
+      "sn": 13,
+      "state_name": "Jharkhand",
+      "biogas_plants": 12,
+      "CBG Plants": 0,
+      "Total": 0,
+      "CBG_plants": 0
+    },
+    {
+      "sn": 14,
+      "state_name": "Karnataka",
+      "biogas_plants": 42,
+      "CBG Plants": 4,
+      "Total": 4,
+      "CBG_plants": 8
+    },
+    {
+      "sn": 15,
+      "state_name": "Kerala",
+      "biogas_plants": 18,
+      "CBG Plants": 0,
+      "Total": 0,
+      "CBG_plants": 0
+    },
+    {
+      "sn": 16,
+      "state_name": "Ladakh",
+      "biogas_plants": 0,
+      "CBG Plants": 0,
+      "Total": 0,
+      "CBG_plants": 0
+    },
+    {
+      "sn": 17,
+      "state_name": "Lakshadweep",
+      "biogas_plants": 0,
+      "CBG Plants": 0,
+      "Total": 0,
+      "CBG_plants": 0
+    },
+    {
+      "sn": 18,
+      "state_name": "Madhya Pradesh",
+      "biogas_plants": 75,
+      "CBG Plants": 3,
+      "Total": 4,
+      "CBG_plants": 7
+    },
+    {
+      "sn": 19,
+      "state_name": "Maharashtra",
+      "biogas_plants": 5,
+      "CBG Plants": 7,
+      "Total": 8,
+      "CBG_plants": 15
+    },
+    {
+      "sn": 20,
+      "state_name": "Manipur",
+      "biogas_plants": 0,
+      "CBG Plants": 0,
+      "Total": 0,
+      "CBG_plants": 0
+    },
+    {
+      "sn": 21,
+      "state_name": "Meghalaya",
+      "biogas_plants": 0,
+      "CBG Plants": 0,
+      "Total": 0,
+      "CBG_plants": 0
+    },
+    {
+      "sn": 22,
+      "state_name": "Mizoram",
+      "biogas_plants": 0,
+      "CBG Plants": 0,
+      "Total": 0,
+      "CBG_plants": 0
+    },
+    {
+      "sn": 23,
+      "state_name": "Nagaland",
+      "biogas_plants": 0,
+      "CBG Plants": 0,
+      "Total": 0,
+      "CBG_plants": 0
+    },
+    {
+      "sn": 24,
+      "state_name": "Odisha",
+      "biogas_plants": 0,
+      "CBG Plants": 0,
+      "Total": 0,
+      "CBG_plants": 0
+    },
+    {
+      "sn": 25,
+      "state_name": "Puducherry",
+      "biogas_plants": 2,
+      "CBG Plants": 0,
+      "Total": 0,
+      "CBG_plants": 0
+    },
+    {
+      "sn": 26,
+      "state_name": "Punjab",
+      "biogas_plants": 7,
+      "CBG Plants": 3,
+      "Total": 2,
+      "CBG_plants": 5
+    },
+    {
+      "sn": 27,
+      "state_name": "Rajasthan",
+      "biogas_plants": 1,
+      "CBG Plants": 2,
+      "Total": 0,
+      "CBG_plants": 2
+    },
+    {
+      "sn": 28,
+      "state_name": "Sikkim",
+      "biogas_plants": 0,
+      "CBG Plants": 0,
+      "Total": 0,
+      "CBG_plants": 0
+    },
+    {
+      "sn": 29,
+      "state_name": "Tamil Nadu",
+      "biogas_plants": 11,
+      "CBG Plants": 3,
+      "Total": 4,
+      "CBG_plants": 7
+    },
+    {
+      "sn": 30,
+      "state_name": "Telangana",
+      "biogas_plants": 0,
+      "CBG Plants": 3,
+      "Total": 3,
+      "CBG_plants": 6
+    },
+    {
+      "sn": 31,
+      "state_name": "Tripura",
+      "biogas_plants": 16,
+      "CBG Plants": 0,
+      "Total": 0,
+      "CBG_plants": 0
+    },
+    {
+      "sn": 32,
+      "state_name": "Uttar Pradesh",
+      "biogas_plants": 26,
+      "CBG Plants": 5,
+      "Total": 6,
+      "CBG_plants": 11
+    },
+    {
+      "sn": 33,
+      "state_name": "Uttarakhand",
+      "biogas_plants": 5,
+      "CBG Plants": 2,
+      "Total": 1,
+      "CBG_plants": 3
+    },
+    {
+      "sn": 34,
+      "state_name": "West Bengal",
+      "biogas_plants": 8,
+      "CBG Plants": 1,
+      "Total": 1,
+      "CBG_plants": 2
+    },
+    {
+      "sn": "Total",
+      "biogas_plants": 587,
+      "CBG Plants": 57,
+      "Total": 46,
+      "CBG_plants": 103
+    }
+  ]
+}
