@@ -252,6 +252,10 @@ $routes->group("testapi", function ($routes) {
 });
 
 
+//----------------------------- SBM Master Directory --------------------
+$routes->get('/sbm-master-directory-report', 'SBMMasterDirectory::locatePlant');
+$routes->get('/sync-sbm-master-directory-data', 'SBMMasterDirectory::callApiAndUpsert');
+
 
 /*
  * --------------------------------------------------------------------
