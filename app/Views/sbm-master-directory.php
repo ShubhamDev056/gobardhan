@@ -70,29 +70,46 @@
 									</select>
 								</div>
 							</div>
-							<div class="col-sm-3">
+							<div class="col-sm-2">
 								<div class="form-group">
-									<select class="form-control" name="plant_type" id="plant_type" >
-										<option value="">Select Type of the Plant</option>
-										<option value="" selected >All</option>
-										<option value="17" <?php if(@$_REQUEST['plant_type']==17){ echo "selected"; } ?> >Biogas</option>
-										<option value="18" <?php if(@$_REQUEST['plant_type']==18){ echo "selected"; } ?> >CBG/ Bio CNG</option>
-										
+									<select class="form-control" name="block" id="block" >
+										<option value="">Select Block</option>
+										<?php
+											foreach($districts as $district){ ?>
+												<option value="<?=$district['district_code'];?>" <?php if(@$_REQUEST['district']==$district['district_code']){ echo "selected"; } ?> ><?=$district['district_name'];?></option>
+											<?php	
+											}
+										?>
 									</select>
 								</div>
 							</div>
-							<div class="col-sm-3">
+							<div class="col-sm-2">
 								<div class="form-group">
-									<select class="form-control" name="plant_status" id="plant_status" >
-										<option value="">Select Status of the Plant</option>
-										<option value="" selected >All</option>
-										<option value="22" <?php if(@$_REQUEST['plant_status']==22){ echo "selected"; } ?> >Yet to start construction</option>
-										<option value="23" <?php if(@$_REQUEST['plant_status']==23){ echo "selected"; } ?> >Under Construction</option>
-										<option value="24" <?php if(@$_REQUEST['plant_status']==24){ echo "selected"; } ?> >Functional</option>
-										
+									<select class="form-control" name="gp" id="gp" >
+										<option value="">Select GP</option>
+										<?php
+											foreach($districts as $district){ ?>
+												<option value="<?=$district['district_code'];?>" <?php if(@$_REQUEST['district']==$district['district_code']){ echo "selected"; } ?> ><?=$district['district_name'];?></option>
+											<?php	
+											}
+										?>
 									</select>
 								</div>
 							</div>
+							<div class="col-sm-2">
+								<div class="form-group">
+									<select class="form-control" name="village" id="village" >
+										<option value="">Select Village</option>
+										<?php
+											foreach($districts as $district){ ?>
+												<option value="<?=$district['district_code'];?>" <?php if(@$_REQUEST['district']==$district['district_code']){ echo "selected"; } ?> ><?=$district['district_name'];?></option>
+											<?php	
+											}
+										?>
+									</select>
+								</div>
+							</div>
+							
 							<div class="col-sm-2">
 								<button class="btn btn-success form-control">Search</button>
 							</div>
@@ -174,7 +191,7 @@ $("#state").on("change", function(){
 	let s = $(this).val();
 	if(s!=""){
 		$.ajax({
-			url:"<?=base_url()?>get-districts",
+			url:"<?=base_url()?>/get-districts-data",
 			type:"post",
 			data:{scode:s},
 			success:function(res){
@@ -184,6 +201,53 @@ $("#state").on("change", function(){
 	}
 	
 });
+
+$("#district").on("change", function(){
+	let s = $(this).val();
+	if(s!=""){
+		$.ajax({
+			url:"<?=base_url()?>/get-blocks-data",
+			type:"post",
+			data:{dcode:s},
+			success:function(res){
+				$("#block").html(res);
+			}
+		});
+	}
+	
+});
+
+$("#block").on("change", function(){
+	let s = $(this).val();
+	if(s!=""){
+		$.ajax({
+			url:"<?=base_url()?>/get-grampanchayats-data",
+			type:"post",
+			data:{bcode:s},
+			success:function(res){
+				$("#gp").html(res);
+			}
+		});
+	}
+	
+});
+
+$("#gp").on("change", function(){
+	let s = $(this).val();
+	if(s!=""){
+		$.ajax({
+			url:"<?=base_url()?>/get-villages-data",
+			type:"post",
+			data:{gcode:s},
+			success:function(res){
+				$("#village").html(res);
+			}
+		});
+	}
+	
+});
+
+
 </script>
 
 <?= $this->endSection(); ?>

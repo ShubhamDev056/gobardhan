@@ -28,8 +28,7 @@ class SBMMasterDirectoryModel extends Model
 
         // Retrieve existing id values from the database
         $existingIds = $this->builder()->select('LGDVillageCode')->whereIn('LGDVillageCode', array_column($data, 'LGDVillageCode'))->get()->getResultArray();
-         echo '<pre>';
-// echo $this->db->getLastQuery();die;
+
         // Prepare data for batch update and insert
         $updateData = [];
         $insertData = [];
@@ -55,25 +54,15 @@ class SBMMasterDirectoryModel extends Model
             }
         }
 
-
-        echo '<pre>';
-        print_r($insertData); 
-        echo('dfdsfffsdsfds');
-        print_r($updateData); 
-        //die;
-
         // Perform batch update if there are records to update
         if (!empty($updateData)) {
-            echo "------------------------------ Update ----------------------------------------------------";
             $this->builder()->updateBatch($updateData, 'LGDVillageCode');
-            echo $this->db->getLastQuery();
         }
 
         // Perform batch insert if there are records to insert
         if (!empty($insertData)) {
-            echo "--------------------------------- insert -------------------------------";
             $this->builder()->insertBatch($insertData);
-            echo $this->db->getLastQuery();
+            //echo $this->db->getLastQuery();
         }
 
         // Commit the transaction
@@ -82,8 +71,5 @@ class SBMMasterDirectoryModel extends Model
         // Return true if transaction was successful, false otherwise
         return $this->db->transStatus();
         }
-
-    
-        
     }
 }
