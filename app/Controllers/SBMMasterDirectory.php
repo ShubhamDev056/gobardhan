@@ -1,23 +1,6 @@
 <?php
 
 namespace App\Controllers;
-use App\Models\OptionList;
-use App\Models\State;
-use App\Models\District;
-use App\Models\Block;
-use App\Models\GramPanchayat;
-use App\Models\Village;
-use App\Models\OrganizationModel;
-use App\Models\ProjectModel;
-use App\Models\ProjectBenefitsModel;
-use App\Models\ProjectFeedstockModel;
-use App\Models\ProjectFundingSourceModel;
-use App\Models\ProjectLinkageModel;
-use App\Models\ProjectRuralAddress;
-use App\Models\ProjectBankModel;
-use App\Models\MonthlyReportingModel;
-use App\Models\MonthlyProjectLog;
-use App\Models\ChangeStatusModel;
 use App\Models\SBMMasterDirectoryModel;
 use CodeIgniter\API\ResponseTrait;
 
@@ -37,17 +20,16 @@ class SBMMasterDirectory extends BaseController
     
     
 	
-	public function locatePlant()
+	public function sbmMasterDirectoryReport()
 	{
-		
-		$stateModel = new State();
-		$districtModel = new District();
-		$projectModel = new ProjectModel();
-		$organizationModel = new OrganizationModel();
-		//$districtModel = new District();
-		$data['states'] = $stateModel->orderBy('state_name','ASC')->findAll(); 
+		$SBMMasterDirectoryModel = new SBMMasterDirectoryModel(); // initialize the model
+		$SBMMasterDirectoryModels = new SBMMasterDirectoryModel(); // initialize the model
+		$data['states'] = $SBMMasterDirectoryModel->select(['LGDStateCode','StateName'])->distinct()->orderBy('StateName','ASC')->findAll(); 
 		$stateId = $this->request->getVar('state');
 		$districtId = $this->request->getVar('district');
+		$blockID = $this->request->getVar('block');
+		$gpID = $this->request->getVar('gp');
+		$villageID = $this->request->getVar('village');
 		$plant_type = $this->request->getVar('plant_type');
 		$plant_status = $this->request->getVar('plant_status');
 		$perpage = $this->request->getVar('per_page');
@@ -58,37 +40,50 @@ class SBMMasterDirectory extends BaseController
 		
 		$locateDetails=[];
 		$districts=[];
+		$blocks=[];
+		$gps=[];
+		$villages=[];
 		$pager=$prpage='';
-		//select project_id, project_name, district_id, entity_type_id, plant_type_id, plant_status_id, gas_production_capacity, solid_feedstock_capacity, liquid_feedstock_capacity, bio_slurry_output, FOM_output, LFOM_output, block_id, village_id, street_area_address  FROM project_details WHERE state_id='22'
+	
 		if($stateId!=""){
+
+			$SBMMasterDirectoryModel->where('LGDStateCode', $stateId);
+			$districts = $SBMMasterDirectoryModels->select(['LGDDistrictCode','DistrictName'])->distinct()->where('LGDStateCode', $stateId)->findAll();
 			
-			$districts = $districtModel->where('state_code',$stateId)->findAll();
-			
-			$projectModel->select("organizations.entity_name ,project_id,organization_id, project_name, entity_type_id, plant_type_id, plant_status_id, gas_production_capacity, solid_feedstock_capacity, liquid_feedstock_capacity, bio_slurry_output, FOM_output, LFOM_output, block_id, village_id, street_area_address ");
-			$projectModel->join('organizations', 'project_details.organization_id=organizations.id');
-			$projectModel->where('project_details.state_id', $stateId);
 			if(!empty($districtId)){
-				$projectModel->where('project_details.district_id', $districtId);
+				$SBMMasterDirectoryModel->where('LGDDistrictCode', $districtId);
+
+				$blocks = $SBMMasterDirectoryModels->select(['LGDBlockCode','BlockName'])->distinct()->where('LGDDistrictCode', $districtId)->findAll();
 			}
-			if(!empty($plant_type)){
-				$projectModel->where('entity_type_id', $plant_type);
+			if(!empty($blockID)){
+				$SBMMasterDirectoryModel->where('LGDBlockCode', $blockID);
+				$gps = $SBMMasterDirectoryModels->select(['LGDGramPanchayatCode','GrampanchayatName'])->distinct()->where('LGDBlockCode', $blockID)->findAll();
 			}
-			if(!empty($plant_status)){
-				$projectModel->where('plant_status_id', $plant_status);
+			if(!empty($gpID)){
+				$SBMMasterDirectoryModel->where('LGDGramPanchayatCode', $gpID);
+				$villages = $SBMMasterDirectoryModels->select(['LGDVillageCode','VillageName'])->distinct()->where('LGDGramPanchayatCode', $gpID)->findAll();
+			}
+			if(!empty($villageID)){
+				$SBMMasterDirectoryModel->where('LGDVillageCode', $villageID);
 			}
 			
-			$locateDetails = $projectModel->paginate($this->per_page);
-			// print_r($projectModel);
-			// die;
-			$pager = $projectModel->pager;
-			$prpage = $projectModel->per_page;
+			$locateDetails = $SBMMasterDirectoryModel->paginate($this->per_page);
+		
+			$pager = $SBMMasterDirectoryModel->pager;
+			$prpage = $SBMMasterDirectoryModel->per_page;
 		}
 		
 		$data['pager'] = $pager;
 		$data['per_page'] = $prpage;
-		
 		$data['locateDetails'] = $locateDetails;
 		$data['districts'] = $districts;
+		$data['blocks'] = $blocks;
+		$data['gps'] = $gps;
+		$data['villages'] = $villages;
+		//echo $SBMMasterDirectoryModel->getLastQuery();
+		// echo '<pre>';
+		// print_r($data);
+		// die;
 		return view('sbm-master-directory',$data);
 	}
 	
@@ -101,18 +96,28 @@ class SBMMasterDirectory extends BaseController
         $stateId = $this->request->getVar('state'); //get the state parameter
         // Fetch JSON data from the API
         $apiURL =   env('API_URL');
-        $stateCode = ($stateId != null) ? $stateId : 30;
+        $stateCode = ($stateId != null) ? $stateId : -1;
         $json_data = $this->fetchJsonDataFromAPI($apiURL,$stateCode);
 
         // Upsert batch data into database
-        $batchSize = 1000;
-      
-        $result = $this->insertJsonDataInBatches($SBMMasterDirectoryModel,$json_data,$batchSize);
-          if($result){
-                 return $this->respond("Data successfully upserted!");
-            }else{
-                 return $this->respond("no data upserted");
-            }
+        $batch_size = 1000;
+
+	    $anyDataUpserted = false;
+		// Batch insert JSON data into MySQL
+        for ($i = 0; $i < count($json_data); $i += $batch_size) {
+            $batch = array_slice($json_data, $i, $batch_size);
+            $result =  $SBMMasterDirectoryModel->updateOrInsertBatch($batch);
+			 if ($result) {
+               $anyDataUpserted = true;
+       		 }
+        }
+
+        if (!$anyDataUpserted) {
+        return $this->respond("No data upserted", 200);
+    	} else {
+        return $this->respond("Data successfully upserted!", 200);
+        }
+	
     }
 	
 	/*
@@ -173,55 +178,55 @@ class SBMMasterDirectory extends BaseController
 
 	public function getDistricts()
     {
-        $districtModel = new District();
+		$SBMMasterDirectoryModel = new SBMMasterDirectoryModel();
         $scode = $this->request->getVar('scode');
-        $districts = $districtModel->where('state_code',$scode)->orderBy('district_name','ASC')->findAll();
+        $districts = $SBMMasterDirectoryModel->select(['LGDDistrictCode','DistrictName'])->distinct()->where('LGDStateCode',$scode)->orderBy('DistrictName','ASC')->findAll();
+		//echo $SBMMasterDirectoryModel->getLastQuery();die;
         echo '<option value="">Select District </option>';
         foreach($districts as $district){
-            $district_name = $district['district_name'];
-            $id = $district['district_code'];
-            echo '<option value="'.$id.'">'.$district_name.'</option>';
+            $DistrictName = $district['DistrictName'];
+            $id = $district['LGDDistrictCode'];
+            echo '<option value="'.$id.'">'.$DistrictName.'</option>';
         }
     }
 	
 	public function getBlocks()
     {
-        $blockModel = new Block();
+       $SBMMasterDirectoryModel = new SBMMasterDirectoryModel();
        $dcode = $this->request->getVar('dcode');
-        $blocks = $blockModel->where('district_code',$dcode)->where('block_code!=0')->orderBy('block_name','ASC')->findAll();
-		//echo $blockModel->getLastQuery();
+        $blocks = $SBMMasterDirectoryModel->select(['LGDBlockCode','BlockName'])->distinct()->where('LGDDistrictCode',$dcode)->where('LGDBlockCode!=0')->orderBy('BlockName','ASC')->findAll();
+		//echo $SBMMasterDirectoryModel->getLastQuery();
         echo '<option value="">Select Block </option>';
         foreach($blocks as $block){
-            $block_name = $block['block_name'];
-            $id = $block['block_code'];
-            echo '<option value="'.$id.'">'.$block_name.'</option>';
+            $BlockName = $block['BlockName'];
+            $id = $block['LGDBlockCode'];
+            echo '<option value="'.$id.'">'.$BlockName.'</option>';
         }
     }
 	
 	public function getGPs()
     {
-        $gramPanchayat = new GramPanchayat();
+        $SBMMasterDirectoryModel = new SBMMasterDirectoryModel();
         $bcode = $this->request->getVar('bcode');
-        $gps = $gramPanchayat->where('block_code',$bcode)->where('gp_code!=0')->orderBy('gp_name','ASC')->findAll();
+        $gps = $SBMMasterDirectoryModel->select(['LGDGramPanchayatCode','GrampanchayatName'])->distinct()->where('LGDBlockCode',$bcode)->where('LGDGramPanchayatCode!=0')->orderBy('GrampanchayatName','ASC')->findAll();
         echo '<option value="">Select GP </option>';
         foreach($gps as $gp){
-            $gp_name = $gp['gp_name'];
-            $id = $gp['gp_code'];
-            echo '<option value="'.$id.'">'.$gp_name.'</option>';
+            $GrampanchayatName = $gp['GrampanchayatName'];
+            $id = $gp['LGDGramPanchayatCode'];
+            echo '<option value="'.$id.'">'.$GrampanchayatName.'</option>';
         }
     }
 	
 	public function getVillages()
     {
-        $villageModel = new Village();
+        $SBMMasterDirectoryModel = new SBMMasterDirectoryModel();
         $gcode = $this->request->getVar('gcode');
-        $villages = $villageModel->where('gp_code',$gcode)->where('village_code!=0')->orderBy('village_name','ASC')->findAll();
-		//print_r($villages);
+        $villages = $SBMMasterDirectoryModel->select(['LGDVillageCode','VillageName'])->distinct()->where('LGDGramPanchayatCode',$gcode)->where('LGDVillageCode!=0')->orderBy('VillageName','ASC')->findAll();
         echo '<option value="">Select village </option>';
         foreach($villages as $village){
-            $village_name = $village['village_name'];
-            $id = $village['village_code'];
-            echo '<option value="'.$id.'">'.$village_name.'</option>';
+            $VillageName = $village['VillageName'];
+            $id = $village['LGDVillageCode'];
+            echo '<option value="'.$id.'">'.$VillageName.'</option>';
         }
     }
     

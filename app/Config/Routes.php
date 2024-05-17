@@ -253,7 +253,7 @@ $routes->group("testapi", function ($routes) {
 
 
 //----------------------------- SBM Master Directory --------------------
-$routes->get('/sbm-master-directory-report', 'SBMMasterDirectory::locatePlant');
+$routes->get('/sbm-master-directory-report', 'SBMMasterDirectory::sbmMasterDirectoryReport');
 $routes->get('/sync-sbm-master-directory-data', 'SBMMasterDirectory::upsertSBMMasterDirectoryData');
 $routes->post('/get-districts-data', 'SBMMasterDirectory::getDistricts');
 $routes->post('/get-blocks-data', 'SBMMasterDirectory::getBlocks');

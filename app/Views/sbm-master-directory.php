@@ -50,7 +50,7 @@
 										<option value="">Select State</option>
 										<?php
 											foreach($states as $state){ ?>
-												<option value="<?=$state['state_code'];?>" <?php if(@$_REQUEST['state']==$state['state_code']){ echo "selected"; } ?> ><?=$state['state_name'];?></option>
+												<option value="<?=$state['LGDStateCode'];?>" <?php if(@$_REQUEST['state']==$state['LGDStateCode']){ echo "selected"; } ?> ><?=$state['StateName'];?></option>
 											<?php	
 											}
 										?>
@@ -63,7 +63,7 @@
 										<option value="">Select District</option>
 										<?php
 											foreach($districts as $district){ ?>
-												<option value="<?=$district['district_code'];?>" <?php if(@$_REQUEST['district']==$district['district_code']){ echo "selected"; } ?> ><?=$district['district_name'];?></option>
+												<option value="<?=$district['LGDDistrictCode'];?>" <?php if(@$_REQUEST['district']==$district['LGDDistrictCode']){ echo "selected"; } ?> ><?=$district['DistrictName'];?></option>
 											<?php	
 											}
 										?>
@@ -75,8 +75,8 @@
 									<select class="form-control" name="block" id="block" >
 										<option value="">Select Block</option>
 										<?php
-											foreach($districts as $district){ ?>
-												<option value="<?=$district['district_code'];?>" <?php if(@$_REQUEST['district']==$district['district_code']){ echo "selected"; } ?> ><?=$district['district_name'];?></option>
+											foreach($blocks as $block){ ?>
+												<option value="<?=$block['LGDBlockCode'];?>" <?php if(@$_REQUEST['block']==$block['LGDBlockCode']){ echo "selected"; } ?> ><?=$block['BlockName'];?></option>
 											<?php	
 											}
 										?>
@@ -88,8 +88,8 @@
 									<select class="form-control" name="gp" id="gp" >
 										<option value="">Select GP</option>
 										<?php
-											foreach($districts as $district){ ?>
-												<option value="<?=$district['district_code'];?>" <?php if(@$_REQUEST['district']==$district['district_code']){ echo "selected"; } ?> ><?=$district['district_name'];?></option>
+											foreach($gps as $gp){ ?>
+												<option value="<?=$gp['LGDGramPanchayatCode'];?>" <?php if(@$_REQUEST['gp']==$gp['LGDGramPanchayatCode']){ echo "selected"; } ?> ><?=$gp['GrampanchayatName'];?></option>
 											<?php	
 											}
 										?>
@@ -101,8 +101,8 @@
 									<select class="form-control" name="village" id="village" >
 										<option value="">Select Village</option>
 										<?php
-											foreach($districts as $district){ ?>
-												<option value="<?=$district['district_code'];?>" <?php if(@$_REQUEST['district']==$district['district_code']){ echo "selected"; } ?> ><?=$district['district_name'];?></option>
+											foreach($villages as $village){ ?>
+												<option value="<?=$village['LGDVillageCode'];?>" <?php if(@$_REQUEST['village']==$village['LGDVillageCode']){ echo "selected"; } ?> ><?=$village['VillageName'];?></option>
 											<?php	
 											}
 										?>
@@ -120,16 +120,11 @@
 				<div class="col-sm-12 table-responsive">
 					<table class="table table-bordered">
 						<tr class="table-header">
-							<th>Name of the Plant</th>
-							<th>Name of the Entity</th>
-							<th>Type of the Plant </th>
-							<th>Status of the Plant </th>
-							<th>Gas Production Capacity</th>
-							<th>Feedstock Capacity</th>
-							<th>Bioslurry Production Capacity</th>
-							<th>FOM Production Capacity</th>
-							<th>LFOM Production Capacity</th>
-							<!--<th>Location Detail</th>-->
+							<th>State</th>
+							<th>District</th>
+							<th>Block </th>
+							<th>Gram Panchayat </th>
+							<th>Village</th>
 						</tr>
 						
 						<?php 
@@ -137,25 +132,15 @@
 							$plntStatus = [''=>'','22'=>'Yet to start construction','23'=>'Under Construction','24'=>'Functional','290'=>'Completed','292'=>'Temporary Nonfunctional','293'=>'Defunct'];
 							if(count($locateDetails)>0){ 
 								foreach($locateDetails as $key=>$locateDetail){
-									$solidUnit = 'Tons/day';
-									$liquidUnit = 'KLD';
-									if($locateDetail['entity_type_id']=="17"){
-										$solidUnit='Kg/day';
-										$liquidUnit='Liters/day';
-									}
 									
 								?>
 									<tr>
-										<td><?=$locateDetail['project_name'];?></td>
-										<td><?=$locateDetail['entity_name'];?></td>
-										<td><?=$entTypes[$locateDetail['entity_type_id']];?></td>
-										<td><?=$plntStatus[$locateDetail['plant_status_id']];?></td>
-										<td><?=$locateDetail['gas_production_capacity'];?> <?php if($locateDetail['entity_type_id']=="17"){ echo "m³/day"; }else{  echo "Tons/day"; } ?>  </td>
-										<td><?=$locateDetail['solid_feedstock_capacity']+$locateDetail['liquid_feedstock_capacity'];?>  <?=$solidUnit;?> </td>
-										<td><?=$locateDetail['bio_slurry_output'];?> <?=$liquidUnit;?> </td>
-										<td><?=$locateDetail['FOM_output'];?> <?=$solidUnit;?> </td>
-										<td><?=$locateDetail['LFOM_output'];?> <?=$liquidUnit;?> </td>
-										<!--<td><?=$locateDetail['block_id'].$locateDetail['village_id'].$locateDetail['street_area_address'];?></td>-->
+										<td><?=$locateDetail['StateName'];?> (<?=$locateDetail['LGDStateCode'];?>)</td>
+										<td><?=$locateDetail['DistrictName'];?> (<?=$locateDetail['LGDDistrictCode'];?>)</td>
+										<td><?=$locateDetail['BlockName'];?> (<?=$locateDetail['LGDBlockCode'];?>)</td>
+										<td><?=$locateDetail['GrampanchayatName'];?> (<?=$locateDetail['LGDGramPanchayatCode'];?>)</td>
+										<td><?=$locateDetail['VillageName'];?> (<?=$locateDetail['LGDVillageCode'];?>)</td>
+										
 									</tr>
 								<?php
 								}
@@ -188,6 +173,10 @@
 
 <script>
 $("#state").on("change", function(){
+	$('#district').val('');
+	$('#block').val('');
+	$('#gp').val('');
+	$('#village').val('');
 	let s = $(this).val();
 	if(s!=""){
 		$.ajax({
@@ -203,6 +192,9 @@ $("#state").on("change", function(){
 });
 
 $("#district").on("change", function(){
+	$('#block').val('');
+	$('#gp').val('');
+	$('#village').val('');
 	let s = $(this).val();
 	if(s!=""){
 		$.ajax({
@@ -218,6 +210,8 @@ $("#district").on("change", function(){
 });
 
 $("#block").on("change", function(){
+	$('#gp').val('');
+	$('#village').val('');
 	let s = $(this).val();
 	if(s!=""){
 		$.ajax({
@@ -233,6 +227,7 @@ $("#block").on("change", function(){
 });
 
 $("#gp").on("change", function(){
+	$('#village').val('');
 	let s = $(this).val();
 	if(s!=""){
 		$.ajax({

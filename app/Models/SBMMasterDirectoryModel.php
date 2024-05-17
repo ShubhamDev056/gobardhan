@@ -11,7 +11,7 @@ class SBMMasterDirectoryModel extends Model
     protected $useAutoIncrement = true;
 
     protected $returnType     = 'array';
-    protected $useSoftDeletes = true;
+    //protected $useSoftDeletes = true;
 
     protected $allowedFields = ['BlockName', 'DistrictName', 'GrampanchayatName', 'LGDBlockCode', 'LGDDistrictCode', 'LGDGramPanchayatCode', 'LGDStateCode', 'LGDVillageCode', 'StateName', 'VillageName'];
 
