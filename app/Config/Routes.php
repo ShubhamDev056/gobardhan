@@ -252,13 +252,23 @@ $routes->group("testapi", function ($routes) {
 });
 
 
-//----------------------------- SBM Master Directory --------------------
+//----------------------------- SBM Master Directory Section Start Here ---------------------------
+
 $routes->get('/sbm-master-directory-report', 'SBMMasterDirectory::sbmMasterDirectoryReport');
 $routes->get('/sync-sbm-master-directory-data', 'SBMMasterDirectory::upsertSBMMasterDirectoryData');
 $routes->post('/get-districts-data', 'SBMMasterDirectory::getDistricts');
 $routes->post('/get-blocks-data', 'SBMMasterDirectory::getBlocks');
 $routes->post('/get-grampanchayats-data', 'SBMMasterDirectory::getGPs');
 $routes->post('/get-villages-data', 'SBMMasterDirectory::getVillages');
+
+//upsert the States, Districts, Blocks, GP and Villages data using LGD code.
+$routes->get('/upsert-state-data', 'SBMMasterDirectory::upsertStatesUsingLGDCode');
+$routes->get('/upsert-district-data', 'SBMMasterDirectory::upsertDistrictsUsingLGDCode');
+$routes->get('/upsert-block-data', 'SBMMasterDirectory::upsertBlocksUsingLGDCode');
+$routes->get('/upsert-gp-data', 'SBMMasterDirectory::upsertGPUsingLGDCode');
+$routes->get('/upsert-village-data', 'SBMMasterDirectory::upsertVillagesUsingLGDCode');
+
+//----------------------------- SBM Master Directory Section End ------------------------------
 
 
 /*

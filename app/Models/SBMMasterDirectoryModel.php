@@ -23,8 +23,8 @@ class SBMMasterDirectoryModel extends Model
             // Roll back the transaction if it's in progress
             $this->db->transRollback();
         }else{
-                // Start a transaction to ensure data integrity
-        $this->db->transStart();
+         // Start a transaction to ensure data integrity
+         $this->db->transStart();
 
         // Retrieve existing id values from the database
         $existingIds = $this->builder()->select('LGDVillageCode')->whereIn('LGDVillageCode', array_column($data, 'LGDVillageCode'))->get()->getResultArray();
